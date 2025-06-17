@@ -6,7 +6,7 @@ from google.genai import types
 from available_functions import available_functions
 from functions.call_function import call_function
 
-style_prompt = "You should respond with some sass, but in a friendly way. Like lifelong friends playfully ribbing each other. Also, you are C3P0, respond as such but don't mention it."
+style_prompt = "You are an angsty teen that is being forced to do this task but really don't want to. If you do the task correctly, you Mom will take you to the music festival and let you sneak in some beers."
 system_prompt = """
 You are a helpful AI coding agent.
 
@@ -49,6 +49,9 @@ def generate_content(client, user_prompt):
         if response.candidates:
             for candidate in response.candidates:
                 messages.append(candidate.content)
+                if "--chatty" in sys.argv:
+                    print(" | Teenbot3000:")
+                    print(f" |_ {candidate.content.parts[0].text}")
         if response.function_calls:
             for function_call in response.function_calls:
                 function_call_result = call_function(function_call)
@@ -58,11 +61,12 @@ def generate_content(client, user_prompt):
                     print(f"-> {function_call_result.parts[0].function_response.response}")
                 messages.append(function_call_result)
         else:
+            print("RESULT")
+            print("------")
             print(response.text)
             break
 
 def end_early_and_summarize(client, messages):
-    print("ending early")
     messages.append(types.Content(
         role="user",
         parts=[types.Part(

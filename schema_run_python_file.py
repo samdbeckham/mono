@@ -2,7 +2,7 @@ from google.genai import types
 
 schema_run_python_file = types.FunctionDeclaration(
     name="run_python_file",
-    description="Executes a python file with optional parameters in the current working directory",
+    description="Executes a python file in the current working directory",
 parameters=types.Schema(
         type=types.Type.OBJECT,
         properties={
